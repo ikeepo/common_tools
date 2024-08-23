@@ -1,0 +1,6 @@
+dp_src: path
+dp_output: path
+pdf_files:
+ - a.pdf
+ - b.pdf
+fn_output: merged.pdf
