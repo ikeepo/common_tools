@@ -3,4 +3,5 @@ dp_output: path
 pdf_files:
  - a.pdf
  - b.pdf
+pdf_depress: name
 fn_output: merged.pdf
