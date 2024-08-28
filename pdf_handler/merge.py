@@ -3,7 +3,7 @@ import yaml
 from pathlib import Path
 def load_from_yaml():
     dp_pwd = Path(__file__).parent
-    yaml_file_path = dp_pwd / 'urls.yaml'
+    yaml_file_path = dp_pwd / 'config.yaml'
     with open(yaml_file_path, 'r') as file:
         data = yaml.safe_load(file)
     return data
@@ -22,3 +22,6 @@ def merge_files():
     merger.write(fp_output)
     merger.close()
     print(f"PDF files merged successfully as {fp_output}")
+
+if __name__=="__main__":
+    merge_files()
