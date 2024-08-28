@@ -1,12 +1,15 @@
 from pypdf import PdfWriter, PdfReader
 import yaml
 from pathlib import Path
-import fitz
-
+#import fitz
+#from ironpdf import *
+import shutil
+import subprocess
+import os
 def load_from_yaml():
     dp_pwd = Path(__file__).parent
     yaml_file_path = dp_pwd / 'config.yaml'
-    with open(yaml_file_path, 'r') as file:
+    with open(yaml_file_path, 'r', encoding='utf-8') as file:
         data = yaml.safe_load(file)
     return data
 def merge_files():
@@ -25,43 +28,84 @@ def merge_files():
     merger.close()
     print(f"PDF files merged successfully as {fp_output}")
 
-def compress_pdf(compression_ratio):
+def compress_pdf(power=2):
+    """Function to compress PDF via Ghostscript command line interface
+    From https://github.com/theeko74/pdfc/blob/master/pdf_compressor.py
+    """    
     # 读取输入 PDF
     data = load_from_yaml()
     dp_src = data.get('dp_src', '.')
     dp_output = data.get("dp_output", '.')
     pdf_compress = data.get('pdf_compress', 'NotFind')
-    output_pdf = data.get('fn_output', f"{pdf_compress}_compressed_{compression_ratio}.pdf")
-    input_pdf= f"{dp_src}/{pdf_compress}"
-    # Open the input PDF file
-    pdf_document = fitz.open(input_pdf)
-    
-    # Get the total number of pages
-    num_pages = pdf_document.page_count
-    
-    # Iterate through each page
-    for page_number in range(num_pages):
-        page = pdf_document.load_page(page_number)
-        
-        # Get images on the page
-        images = page.get_images(full=True)
-        
-        for img in images:
-            xref = img[0]
-            pix = fitz.Pixmap(pdf_document, xref)
-            
-            # Compress the image
-            if pix.n < 5:  # this is GRAY or RGB
-                pix = fitz.Pixmap(fitz.csRGB, pix)  # convert to RGB
-            pix.set_dpi(int(pix.xres * compression_ratio), int(pix.yres * compression_ratio))
-            pdf_document.update_image(xref, pix)
-    
-    # Save the compressed PDF
-    pdf_document.save(output_pdf, garbage=4)
-    pdf_document.close()
+    output_fn = data.get('fn_output', f"{pdf_compress}_compressed_{power}.pdf")
+    output_file_path = f"{dp_output}/{output_fn}"
+    input_file_path= f"{dp_src}/{pdf_compress}"
+
+    print(input_file_path)
+    print(output_file_path)
+    print(power)
+    #exit()
+
+    quality = {
+        0: "/default",
+        1: "/prepress",
+        2: "/printer",
+        3: "/ebook",
+        4: "/screen"
+    }
+
+    # Basic controls
+    # Check if valid path
+    if not os.path.isfile(input_file_path):
+        print("Error: invalid path for input PDF file.", input_file_path)
+        sys.exit(1)
+
+    # Check compression level
+    if power < 0 or power > len(quality) - 1:
+        print("Error: invalid compression level, run pdfc -h for options.", power)
+        sys.exit(1)
+
+    # Check if file is a PDF by extension
+    if input_file_path.split('.')[-1].lower() != 'pdf':
+        print(f"Error: input file is not a PDF.", input_file_path)
+        sys.exit(1)
+
+    gs = get_ghostscript_path()
+    print("Compress PDF...")
+    print(gs)
+    initial_size = os.path.getsize(input_file_path)
+    subprocess.call(
+        [
+            gs,
+            "-sDEVICE=pdfwrite",
+            "-dCompatibilityLevel=1.4",
+            "-dPDFSETTINGS={}".format(quality[power]),
+            "-dNOPAUSE",
+            "-dQUIET",
+            "-dBATCH",
+            "-sOutputFile={}".format(output_file_path),
+            input_file_path,
+        ]
+    )
+    final_size = os.path.getsize(output_file_path)
+    ratio = 1 - (final_size / initial_size)
+    print("Compression by {0:.0%}.".format(ratio))
+    print("Final file size is {0:.5f}MB".format(final_size / 1000000))
+    print("Done.")
+
+def get_ghostscript_path():
+    gs_names = ["gs", "gswin32", "gswin64"]
+    for name in gs_names:
+        if shutil.which(name):
+            return shutil.which(name)
+    raise FileNotFoundError(
+        f"No GhostScript executable was found on path ({'/'.join(gs_names)})"
+    )
+
+
 
 
 if __name__=="__main__":
     #merge_files()
     
-    compress_pdf(compression_ratio=9.5)
+    compress_pdf()
