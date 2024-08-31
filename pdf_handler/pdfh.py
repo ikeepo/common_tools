@@ -105,6 +105,6 @@ def get_ghostscript_path():
 
 
 if __name__ == "__main__":
-    # merge_files()
+    merge_files()
 
-    compress_pdf()
+    #compress_pdf()
