@@ -6,8 +6,8 @@ from pathlib import Path
 def download_youtube_video(url, output_path="."):
     try:
         # 设置下载选项
-        ydl_opts = {"format": "best", "outtmpl": f"{output_path}/%(title)s.%(ext)s"}
-
+        fp = f"{output_path}/%(title)s.%(ext)s"
+        ydl_opts = {"format": "best", "outtmpl": fp}
         # 使用 yt-dlp 下载视频
         with yt_dlp.YoutubeDL(ydl_opts) as ydl:
             print(f"Downloading: {url}")
