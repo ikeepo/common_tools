@@ -11,15 +11,20 @@ fi
 
 # 如果输入的是目录路径
 if [ -d "$input" ]; then
+  echo "you specify a directory path $input"
   # 遍历目录中的所有文件
   for file in "$input"/*; do
     if [ -f "$file" ]; then
       # 获取文件名
       filename=$(basename "$file")
-      
-      # 将文件名中的 | 替换为 _
-      modified_filename=$(echo "$filename" | sed 's/|/_/g')
-      
+      echo "$filename processing" 
+      # 删除文件名中的空格
+      modified_filename=$(echo "$filename" | tr -d '[:space:]')
+      #echo "修改后名称为$modified_filename" 
+      # 将文件名中的 | 或者 ｜ 替换为 _
+      modified_filename=$(echo "$modified_filename" | sed 's/|/_/g')
+      modified_filename=$(echo "$modified_filename" | sed 's/｜/_/g')
+      #echo "修改后名称为$modified_filename" 
       # 如果文件名被修改，则重命名文件
       if [ "$filename" != "$modified_filename" ]; then
         mv "$file" "$input/$modified_filename"
@@ -30,6 +35,8 @@ if [ -d "$input" ]; then
 
 # 如果输入的是文件路径
 elif [ -f "$input" ]; then
+  echo "you specify a file name $input"
+  # 遍历目录中的所有文件
   # 获取文件名
   filename=$(basename "$input")
   
