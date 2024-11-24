@@ -24,6 +24,10 @@ if [ -d "$input" ]; then
       # 将文件名中的 | 或者 ｜ 替换为 _
       modified_filename=$(echo "$modified_filename" | sed 's/|/_/g')
       modified_filename=$(echo "$modified_filename" | sed 's/｜/_/g')
+      modified_filename=$(echo "$modified_filename" | sed 's/／/_/g')
+      modified_filename=$(echo "$modified_filename" | sed 's//_/g')
+      # 全角替换为半角
+      modified_filename=$(echo "$modified_filename" | nkf -Z1 -w)
       #echo "修改后名称为$modified_filename" 
       # 如果文件名被修改，则重命名文件
       if [ "$filename" != "$modified_filename" ]; then
