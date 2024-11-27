@@ -11,3 +11,9 @@ python -m venv .v2t
 source .v2t/bin/activate
 python -m pip install -r requirements.txt
 ```
+
+# Refs
+https://github.com/declare-lab/tango
+https://github.com/javedali99/audio-to-text-transcription
+https://github.com/rocketseat-education/nlw-expert-react
+
