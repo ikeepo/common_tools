@@ -17,10 +17,9 @@ if [ -d "$input" ]; then
     if [ -f "$file" ]; then
       # 获取文件名
       filename=$(basename "$file")
-      echo "$filename processing" 
       # 删除文件名中的空格
       modified_filename=$(echo "$filename" | tr -d '[:space:]')
-      #echo "修改后名称为$modified_filename" 
+      #echo "修改后名称为$modified_filename"
       # 将文件名中的 | 或者 ｜ 替换为 _
       modified_filename=$(echo "$modified_filename" | sed 's/|/_/g')
       modified_filename=$(echo "$modified_filename" | sed 's/｜/_/g')
@@ -28,11 +27,14 @@ if [ -d "$input" ]; then
       modified_filename=$(echo "$modified_filename" | sed 's//_/g')
       # 全角替换为半角
       modified_filename=$(echo "$modified_filename" | nkf -Z1 -w)
-      #echo "修改后名称为$modified_filename" 
+      #echo "修改后名称为$modified_filename"
       # 如果文件名被修改，则重命名文件
       if [ "$filename" != "$modified_filename" ]; then
         mv "$file" "$input/$modified_filename"
-        echo "已重命名: $filename -> $modified_filename"
+        echo "🆗 name change\n $filename ---> $modified_filename"
+      else
+        echo "👍 no need to change: $filename "
+
       fi
     fi
   done
@@ -43,7 +45,7 @@ elif [ -f "$input" ]; then
   # 遍历目录中的所有文件
   # 获取文件名
   filename=$(basename "$input")
-  
+
   # 将文件名中的 | 替换为 _
   modified_filename=$(echo "$filename" | sed 's/|/_/g')
 
@@ -57,4 +59,3 @@ else
   echo "输入的路径无效: $input"
   exit 1
 fi
-
