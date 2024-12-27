@@ -29,6 +29,8 @@ if [ -d "$input" ]; then
       # 删除-libgen.li
       modified_filename=$(echo "$modified_filename" | sed 's/-libgen.li//g')
       modified_filename=$(echo "$modified_filename" | sed 's/libgen.li//g')
+      # , to _
+      modified_filename=$(echo "$modified_filename" | sed 's/,/_/g')
       #echo "修改后名称为$modified_filename"
       # 将文件名中的 | 或者 ｜ 替换为 _
       modified_filename=$(echo "$modified_filename" | sed 's/|/_/g')
