@@ -19,6 +19,9 @@ if [ -d "$input" ]; then
       filename=$(basename "$file")
       # 删除文件名中的空格
       modified_filename=$(echo "$filename" | tr -d '[:space:]')
+      # delete () and []
+      modified_filename=$(echo "$modified_filename" | sed 's/(\|)//g')
+      modified_filename=$(echo "$modified_filename" | sed 's/\[|\]//g')
       #echo "修改后名称为$modified_filename"
       # 将文件名中的 | 或者 ｜ 替换为 _
       modified_filename=$(echo "$modified_filename" | sed 's/|/_/g')
@@ -31,9 +34,9 @@ if [ -d "$input" ]; then
       # 如果文件名被修改，则重命名文件
       if [ "$filename" != "$modified_filename" ]; then
         mv "$file" "$input/$modified_filename"
-        echo "🆗 name change\n $filename ---> $modified_filename"
+        echo "🆗 name change: $filename ---> $modified_filename"
       else
-        echo "👍 no need to change: $filename "
+        echo "👍 no need change: $filename "
 
       fi
     fi
