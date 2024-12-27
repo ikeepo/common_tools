@@ -12,6 +12,9 @@ fi
 # 如果输入的是目录路径
 if [ -d "$input" ]; then
   echo "you specify a directory path $input"
+  # 删除所有Zone.Identifier文件
+  find "$input" -type f -name "*:Zone.Identifier" -exec rm -f {} \;
+  # echo "删除所有Zone.Identifier文件"
   # 遍历目录中的所有文件
   for file in "$input"/*; do
     if [ -f "$file" ]; then
