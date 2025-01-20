@@ -1,6 +1,7 @@
 import yaml
 import yt_dlp
 from pathlib import Path
+import os
 
 
 def download_youtube_video(url, output_path="."):
@@ -33,7 +34,7 @@ if __name__ == "__main__":
     video_urls = data.get("videos", [])
     # 下载路径
     download_path = data.get("dl_path", ".")
-
+    os.makedirs(download_path, exist_ok=True)
     if not video_urls:
         print("No URLs found in the YAML file.")
     else:
