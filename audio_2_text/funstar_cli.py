@@ -1,6 +1,7 @@
 from funasr import AutoModel
 from funasr.utils.postprocess_utils import rich_transcription_postprocess
 import argparse
+import sys
 
 
 def main(input):
@@ -34,6 +35,9 @@ if __name__ == "__main__":
     arg_parser.add_argument("--input", type=str, default="example/en.mp3")
     args = arg_parser.parse_args()
     input = args.input
-    print(f"parseing {input}")
-    text = main(input)
-    print(text)
+    if len(sys.argv) < 3:
+        print("Usage: python funstar_cli.py --input example/en.mp3")
+    else:
+        print(f"parseing {input}")
+        text = main(input)
+        print(text)
