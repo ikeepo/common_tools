@@ -9,8 +9,8 @@ moviepy==1.0.3
 numpy==1.26.3
 pillow==10.2.0
 proglog==0.1.10
+PyYAML==6.0.2
 requests==2.31.0
+setuptools==75.3.0
 tqdm==4.66.1
 urllib3==2.1.0
-
-pyyaml==6.0.2
