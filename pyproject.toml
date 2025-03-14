@@ -1,0 +1,18 @@
+[project]
+name = "common-tools"
+version = "0.1.0"
+description = ""
+authors = [
+    {name = "ikeepo",email = "ikeepo@proton.me"}
+]
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "tweepy (>=4.15.0,<5.0.0)",
+    "pytz (>=2025.1,<2026.0)"
+]
+
+
+[build-system]
+requires = ["poetry-core>=2.0.0,<3.0.0"]
+build-backend = "poetry.core.masonry.api"
