@@ -1,3 +1,7 @@
+"""
+尚未成功，可能是因为免费账户不支持
+"""
+
 import tweepy
 from datetime import datetime
 import os
@@ -72,4 +76,3 @@ def delete_tweets_after_date(cutoff_date):
 if __name__ == "__main__":
     print(f"正在删除 {CUTOFF_DATE} 之后的推文...")
     delete_tweets_after_date(CUTOFF_DATE)
-
