@@ -9,10 +9,15 @@ readme = "README.md"
 requires-python = ">=3.12"
 dependencies = [
     "tweepy (>=4.15.0,<5.0.0)",
-    "pytz (>=2025.1,<2026.0)"
+    "pytz (>=2025.1,<2026.0)",
+    "pyyaml (>=6.0.2,<7.0.0)",
+    "yt-dlp (>=2025.3.27,<2026.0.0)"
 ]
 
 
 [build-system]
 requires = ["poetry-core>=2.0.0,<3.0.0"]
 build-backend = "poetry.core.masonry.api"
+
+[tool.uv.workspace]
+members = ["ytb_dl"]

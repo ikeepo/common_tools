@@ -1,7 +1,7 @@
 import sys
 import os
 from pathlib import Path
-from moviepy.editor import *
+from moviepy.editor import VideoFileClip
 import yaml
 import datetime
 
