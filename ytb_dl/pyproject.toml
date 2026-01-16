@@ -1,0 +1,13 @@
+[project]
+name = "ytb-dl"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.13"
+# uv pip install 并不会自动在dependencies添加
+# python 3.13开始，默认的venv不再保证包含pip，pip交给包管理工具uv等处理
+# uv pip是uv自带的pip安装到.venv中，.venv中没有pip
+# 如果项目存在.venv与shell一致， uv会优先使用.venv，否则就会默认使用shell环境，除非--python .venv/bin/python指定环境
+#❯ uv pip install -r requirements.txt --python .venv/bin/python
+#uv run用的是.venv
+dependencies = []
